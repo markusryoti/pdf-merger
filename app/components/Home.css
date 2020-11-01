@@ -1,14 +1,12 @@
-.container {
-  position: absolute;
-  top: 30%;
-  left: 10px;
-  text-align: center;
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
 }
 
-.container h2 {
-  font-size: 5rem;
-}
-
-.container a {
-  font-size: 1.4rem;
+.backgroundcontainer {
+  height: 100vh;
+  background: hsl(348, 100%, 61%);
+  padding-top: 40px;
 }
