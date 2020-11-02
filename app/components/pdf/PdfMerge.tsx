@@ -3,29 +3,18 @@
 import path from 'path';
 import React, { useState } from 'react';
 import DraggableList from 'react-draggable-list';
+import PDFMerger from 'pdf-merger-js';
+
 import PdfFileItem from './PdfFileItem';
+import { IPdfFileListItem, PdfFileListItemImpl } from './PdfFileListItem';
 
 const { dialog } = require('electron').remote;
 
-export interface IPdfFileListItem {
-  absolutePath: string;
-  fileName: string;
-}
-
-class PdfFileListItemImpl implements IPdfFileListItem {
-  absolutePath: string;
-  fileName: string;
-
-  constructor(absolutePath: string, fileName: string) {
-    this.absolutePath = absolutePath;
-    this.fileName = fileName;
-  }
-}
-
 const PdfMerge = () => {
   const container = React.createRef<HTMLDivElement>();
-  const [srcFiles, setSrcFiles] = useState<ReadonlyArray<IPdfFileListItem>>();
-  const [outputFile, setOutputFile] = useState<string>();
+  const [srcFiles, setSrcFiles] = useState<ReadonlyArray<IPdfFileListItem>>([]);
+  const [outputFile, setOutputFile] = useState<string>('');
+  const [loading, setLoading] = useState<boolean>(false);
 
   const selectPdfFiles = (): void => {
     const files = dialog.showOpenDialog({
@@ -65,10 +54,25 @@ const PdfMerge = () => {
         }
         return selectedPath;
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        throw new Error("Couldn't select output file");
+      });
   };
 
-  const doPdfMerge = (): void => {};
+  const doPdfMerge = async (): Promise<void> => {
+    if (!outputFile) return;
+
+    setLoading(true);
+    const merger = new PDFMerger();
+    srcFiles?.forEach((item) => merger.add(item.absolutePath));
+
+    try {
+      await merger.save(outputFile);
+      setLoading(false);
+    } catch (err) {
+      throw new Error("Couldn't do merge");
+    }
+  };
 
   return (
     <div>
@@ -88,7 +92,7 @@ const PdfMerge = () => {
           <DraggableList<IPdfFileListItem, void, PdfFileItem>
             itemKey="fileName"
             template={PdfFileItem}
-            list={srcFiles ? srcFiles! : []}
+            list={srcFiles}
             onMoveEnd={(newList) => onListChange(newList)}
             container={container.current}
           />
@@ -109,7 +113,7 @@ const PdfMerge = () => {
         <h2 className="subtitle">4. Merge</h2>
         <button
           type="button"
-          className="button is-primary"
+          className={`button is-primary ${loading ? 'is-loading' : ''}`}
           onClick={doPdfMerge}
         >
           Start

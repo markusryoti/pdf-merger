@@ -3,7 +3,7 @@
 /* eslint-disable @typescript-eslint/ban-types */
 /* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
-import { IPdfFileListItem } from './PdfMerge';
+import { IPdfFileListItem } from './PdfFileListItem';
 
 interface PdfFileProps {
   item: IPdfFileListItem;
