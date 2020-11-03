@@ -1,9 +1,12 @@
+/* eslint-disable no-console */
+/* eslint-disable no-await-in-loop */
 /* eslint-disable import/no-cycle */
-/* eslint-disable @typescript-eslint/lines-between-class-members */
 import path from 'path';
+import fs from 'fs';
 import React, { useState } from 'react';
 import DraggableList from 'react-draggable-list';
-import PDFMerger from 'pdf-merger-js';
+
+import { PDFDocument } from 'pdf-lib';
 
 import PdfFileItem from './PdfFileItem';
 import { IPdfFileListItem, PdfFileListItemImpl } from './PdfFileListItem';
@@ -30,7 +33,6 @@ const PdfMerge = () => {
         });
         return setSrcFiles(pdfObjs);
       })
-      // eslint-disable-next-line no-console
       .catch((err) => console.log(err));
   };
 
@@ -54,24 +56,51 @@ const PdfMerge = () => {
         }
         return selectedPath;
       })
-      .catch((err) => {
+      .catch(() => {
         throw new Error("Couldn't select output file");
       });
   };
 
   const doPdfMerge = async (): Promise<void> => {
     if (!outputFile) return;
-
     setLoading(true);
-    const merger = new PDFMerger();
-    srcFiles?.forEach((item) => merger.add(item.absolutePath));
 
-    try {
-      await merger.save(outputFile);
-      setLoading(false);
-    } catch (err) {
-      throw new Error("Couldn't do merge");
+    // Save start time
+    const startTime: number = new Date().getTime();
+
+    const pdfsToMerge = srcFiles?.map((item) =>
+      fs.readFileSync(item.absolutePath)
+    );
+
+    const mergedPdf = await PDFDocument.create();
+
+    // eslint-disable-next-line no-restricted-syntax
+    for (const pdfBytes of pdfsToMerge) {
+      const pdf = await PDFDocument.load(pdfBytes);
+      const copiedPages = await mergedPdf.copyPages(pdf, pdf.getPageIndices());
+      copiedPages.forEach((page) => {
+        mergedPdf.addPage(page);
+      });
     }
+
+    const buf = await mergedPdf.save(); // Uint8Array
+
+    fs.open(outputFile, 'w', (err, fd) => {
+      if (err) console.log("Couldn't open output file");
+
+      fs.write(fd, buf, 0, buf.length, null, (writeErr) => {
+        if (writeErr) console.log("Couldn't write pdf");
+
+        fs.close(fd, () => {
+          const endTime: number = new Date().getTime();
+          if (endTime - startTime > 1000) {
+            setLoading(false);
+          } else {
+            setTimeout(() => setLoading(false), 1000);
+          }
+        });
+      });
+    });
   };
 
   return (
