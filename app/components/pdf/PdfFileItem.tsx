@@ -16,7 +16,7 @@ export default class PdfFileItem extends React.Component<PdfFileProps> {
     const { item, dragHandleProps } = this.props;
     return (
       <li>
-        <div className="box" {...dragHandleProps}>
+        <div className="box m-2" {...dragHandleProps}>
           {item.fileName && <div>{item.fileName}</div>}
         </div>
       </li>

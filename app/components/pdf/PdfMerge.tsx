@@ -11,7 +11,7 @@ import { PDFDocument } from 'pdf-lib';
 import PdfFileItem from './PdfFileItem';
 import { IPdfFileListItem, PdfFileListItemImpl } from './PdfFileListItem';
 
-const { dialog } = require('electron').remote;
+const { dialog, shell } = require('electron').remote;
 
 const PdfMerge = () => {
   const container = React.createRef<HTMLDivElement>();
@@ -115,7 +115,7 @@ const PdfMerge = () => {
           Browse
         </button>
       </div>
-      <div className="box mt-5">
+      <div className="box mt-3">
         <h2 className="subtitle">2. Select the order of Pdf Files</h2>
         <ol className="ml-5">
           <DraggableList<IPdfFileListItem, void, PdfFileItem>
@@ -127,7 +127,7 @@ const PdfMerge = () => {
           />
         </ol>
       </div>
-      <div className="box mt-5">
+      <div className="box mt-3">
         <h2 className="subtitle">3. Select Output File</h2>
         <button
           type="button"
@@ -138,15 +138,26 @@ const PdfMerge = () => {
         </button>
         <p className="mt-3">{outputFile && path.basename(outputFile)}</p>
       </div>
-      <div className="box mt-5">
+      <div className="box mt-3">
         <h2 className="subtitle">4. Merge</h2>
-        <button
-          type="button"
-          className={`button is-primary ${loading ? 'is-loading' : ''}`}
-          onClick={doPdfMerge}
-        >
-          Start
-        </button>
+        <div className="is-flex">
+          <button
+            type="button"
+            className={`button is-primary mr-3 is-medium ${
+              loading ? 'is-loading' : ''
+            }`}
+            onClick={doPdfMerge}
+          >
+            Start
+          </button>
+          <button
+            type="button"
+            className="button is-success is-medium"
+            onClick={() => shell.showItemInFolder(outputFile)}
+          >
+            Go To Location
+          </button>
+        </div>
       </div>
     </div>
   );

@@ -6,8 +6,11 @@ import PdfMerge from './pdf/PdfMerge';
 
 export default function Home(): JSX.Element {
   return (
-    <div className={styles.backgroundcontainer} data-tid="backgroundcontainer">
-      <div className="container has-background-light p-5">
+    <div
+      className={`${styles.backgroundcontainer} pb-5`}
+      data-tid="backgroundcontainer"
+    >
+      <div className="container p-5">
         <PdfMerge />
       </div>
     </div>
