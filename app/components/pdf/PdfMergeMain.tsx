@@ -23,7 +23,7 @@ enum FormState {
   Run,
 }
 
-const PdfMerge = () => {
+const PdfMergeMain = () => {
   const [srcFiles, setSrcFiles] = useState<ReadonlyArray<IPdfFileListItem>>([]);
   const [outputFile, setOutputFile] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
@@ -126,7 +126,11 @@ const PdfMerge = () => {
   switch (formState) {
     case FormState.InputSelection:
       return (
-        <FileInput selectPdfFiles={selectPdfFiles} goForwards={goForwards} />
+        <FileInput
+          srcFiles={srcFiles}
+          selectPdfFiles={selectPdfFiles}
+          goForwards={goForwards}
+        />
       );
     case FormState.FileOrdering:
       return (
@@ -160,4 +164,4 @@ const PdfMerge = () => {
   }
 };
 
-export default PdfMerge;
+export default PdfMergeMain;

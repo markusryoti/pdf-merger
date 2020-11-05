@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import routes from '../constants/routes.json';
 import styles from './Home.css';
-import PdfMerge from './pdf/PdfMerge';
+import PdfMergeMain from './pdf/PdfMergeMain';
 
 export default function Home(): JSX.Element {
   return (
@@ -11,7 +11,7 @@ export default function Home(): JSX.Element {
       data-tid="backgroundcontainer"
     >
       <div className="container p-5">
-        <PdfMerge />
+        <PdfMergeMain />
       </div>
     </div>
   );
