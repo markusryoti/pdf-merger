@@ -4,20 +4,32 @@
 import path from 'path';
 import fs from 'fs';
 import React, { useState } from 'react';
-import DraggableList from 'react-draggable-list';
 
 import { PDFDocument } from 'pdf-lib';
 
-import PdfFileItem from './PdfFileItem';
 import { IPdfFileListItem, PdfFileListItemImpl } from './PdfFileListItem';
 
-const { dialog, shell } = require('electron').remote;
+import FileInput from './FileInput';
+import PdfOrdering from './PdfOrdering';
+import OutputFileSelection from './OutputFileSelection';
+import MergeRun from './MergeRun';
+
+const { dialog } = require('electron').remote;
+
+enum FormState {
+  InputSelection,
+  FileOrdering,
+  OutputSelection,
+  Run,
+}
 
 const PdfMerge = () => {
-  const container = React.createRef<HTMLDivElement>();
   const [srcFiles, setSrcFiles] = useState<ReadonlyArray<IPdfFileListItem>>([]);
   const [outputFile, setOutputFile] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
+  const [formState, setFormState] = useState<number>(FormState.InputSelection);
+
+  console.log(formState.valueOf());
 
   const selectPdfFiles = (): void => {
     const files = dialog.showOpenDialog({
@@ -103,64 +115,49 @@ const PdfMerge = () => {
     });
   };
 
-  return (
-    <div>
-      <div className="box mt-3">
-        <h2 className="subtitle">1. Select Pdf Files</h2>
-        <button
-          type="button"
-          className="button is-link"
-          onClick={selectPdfFiles}
-        >
-          Browse
-        </button>
-      </div>
-      <div className="box mt-3">
-        <h2 className="subtitle">2. Select the order of Pdf Files</h2>
-        <ol className="ml-5">
-          <DraggableList<IPdfFileListItem, void, PdfFileItem>
-            itemKey="fileName"
-            template={PdfFileItem}
-            list={srcFiles}
-            onMoveEnd={(newList) => onListChange(newList)}
-            container={container.current}
-          />
-        </ol>
-      </div>
-      <div className="box mt-3">
-        <h2 className="subtitle">3. Select Output File</h2>
-        <button
-          type="button"
-          className="button is-link"
-          onClick={setResultPdfName}
-        >
-          Select Output File
-        </button>
-        <p className="mt-3">{outputFile && path.basename(outputFile)}</p>
-      </div>
-      <div className="box mt-3">
-        <h2 className="subtitle">4. Merge</h2>
-        <div className="is-flex">
-          <button
-            type="button"
-            className={`button is-primary mr-3 is-medium ${
-              loading ? 'is-loading' : ''
-            }`}
-            onClick={doPdfMerge}
-          >
-            Start
-          </button>
-          <button
-            type="button"
-            className="button is-success is-medium"
-            onClick={() => shell.showItemInFolder(outputFile)}
-          >
-            Go To Location
-          </button>
-        </div>
-      </div>
-    </div>
-  );
+  const goForwards = (): void => {
+    setFormState(formState + 1);
+  };
+
+  const goBackwards = (): void => {
+    setFormState(formState - 1);
+  };
+
+  switch (formState) {
+    case FormState.InputSelection:
+      return (
+        <FileInput selectPdfFiles={selectPdfFiles} goForwards={goForwards} />
+      );
+    case FormState.FileOrdering:
+      return (
+        <PdfOrdering
+          srcFiles={srcFiles}
+          onListChange={onListChange}
+          goForwards={goForwards}
+          goBackwards={goBackwards}
+        />
+      );
+    case FormState.OutputSelection:
+      return (
+        <OutputFileSelection
+          setResultPdfName={setResultPdfName}
+          outputFile={outputFile}
+          goForwards={goForwards}
+          goBackwards={goBackwards}
+        />
+      );
+    case FormState.Run:
+      return (
+        <MergeRun
+          doPdfMerge={doPdfMerge}
+          loading={loading}
+          outputFile={outputFile}
+          goBackwards={goBackwards}
+        />
+      );
+    default:
+      return <></>;
+  }
 };
 
 export default PdfMerge;
