@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import DraggableList from 'react-draggable-list';
 import PdfFileItem from './PdfFileItem';
 import { IPdfFileListItem } from './PdfFileListItem';
@@ -20,9 +20,9 @@ const PdfOrdering = ({
 
   return (
     <div className="box page-container mt-3 is-flex is-flex-direction-column is-justify-content-space-between">
-      <div>
+      <div className="is-flex is-flex-direction-column is-flex-grow-2">
         <h2 className="subtitle">2. Select the order of Pdf Files</h2>
-        <ol className="ml-5">
+        <div style={{ overflow: 'auto', height: '75%' }} ref={container}>
           <DraggableList<IPdfFileListItem, void, PdfFileItem>
             itemKey="fileName"
             template={PdfFileItem}
@@ -30,7 +30,7 @@ const PdfOrdering = ({
             onMoveEnd={(newList) => onListChange(newList)}
             container={container.current}
           />
-        </ol>
+        </div>
       </div>
       <div>
         <button

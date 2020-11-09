@@ -29,8 +29,6 @@ const PdfMergeMain = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [formState, setFormState] = useState<number>(FormState.InputSelection);
 
-  console.log(formState.valueOf());
-
   const selectPdfFiles = (): void => {
     const files = dialog.showOpenDialog({
       filters: [{ name: 'Pdf Files', extensions: ['pdf'] }],

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { IPdfFileListItem } from './PdfFileListItem';
 
 interface Props {
   srcFiles: ReadonlyArray<IPdfFileListItem>;
@@ -18,12 +19,13 @@ const FileInput = ({ srcFiles, selectPdfFiles, goForwards }: Props) => {
         >
           Browse
         </button>
-        <ul className="mt-5">
+        {srcFiles && <h5 className="mt-5 title is-6">Selected</h5>}
+        <ol style={{ overflow: 'auto', maxHeight: '50%' }}>
           {srcFiles &&
             srcFiles.map((item) => {
               return <li key={item.absolutePath}>{item.fileName}</li>;
             })}
-        </ul>
+        </ol>
       </div>
       <div>
         <button
