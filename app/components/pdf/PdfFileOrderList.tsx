@@ -12,7 +12,7 @@ interface Props {
 }
 
 export const PdfFileOrderList = ({ srcFiles, setSrcFiles }: Props) => {
-  const [{ isOver, canDrop }, drop] = useDrop({
+  const [, drop] = useDrop({
     accept: ItemType.LIST_ITEM,
     drop: () => console.log('dropped'),
     collect: (monitor) => ({

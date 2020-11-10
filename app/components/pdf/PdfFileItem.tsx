@@ -69,11 +69,8 @@ export const PdfFileItem = ({
 
   const [{ isDragging }, drag] = useDrag({
     item: { type: ItemType.LIST_ITEM },
-    end: (item, monitor) => {
-      const dropResult = monitor.getDropResult();
-    },
     collect: (monitor) => ({
-      isDragging: !!monitor.isDragging(),
+      isDragging: monitor.isDragging(),
     }),
   });
 

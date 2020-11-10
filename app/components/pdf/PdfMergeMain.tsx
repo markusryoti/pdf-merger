@@ -154,7 +154,7 @@ const PdfMergeMain = () => {
         />
       );
     default:
-      return <></>;
+      return <>Something is not right...</>;
   }
 };
 
