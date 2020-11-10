@@ -1,35 +1,27 @@
+/* eslint-disable import/no-named-as-default */
 import React from 'react';
-import DraggableList from 'react-draggable-list';
-import PdfFileItem from './PdfFileItem';
 import { IPdfFileListItem } from './PdfFileListItem';
+import PdfFileOrderList from './PdfFileOrderList';
 
 interface Props {
   srcFiles: ReadonlyArray<IPdfFileListItem>;
-  onListChange: any;
+  setSrcFiles: any;
   goForwards: any;
   goBackwards: any;
 }
 
 const PdfOrdering = ({
   srcFiles,
-  onListChange,
+  setSrcFiles,
   goForwards,
   goBackwards,
 }: Props) => {
-  const container = React.createRef<HTMLDivElement>();
-
   return (
     <div className="box page-container mt-3 is-flex is-flex-direction-column is-justify-content-space-between">
       <div className="is-flex is-flex-direction-column is-flex-grow-2">
         <h2 className="subtitle">2. Select the order of Pdf Files</h2>
-        <div style={{ overflow: 'auto', height: '75%' }} ref={container}>
-          <DraggableList<IPdfFileListItem, void, PdfFileItem>
-            itemKey="fileName"
-            template={PdfFileItem}
-            list={srcFiles}
-            onMoveEnd={(newList) => onListChange(newList)}
-            container={container.current}
-          />
+        <div style={{ overflow: 'auto', height: '75%' }}>
+          <PdfFileOrderList srcFiles={srcFiles} setSrcFiles={setSrcFiles} />
         </div>
       </div>
       <div>

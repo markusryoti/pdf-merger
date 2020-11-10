@@ -38,16 +38,12 @@ const PdfMergeMain = () => {
     files
       .then((res) => {
         const pdfs: string[] = res.filePaths;
-        const pdfObjs: IPdfFileListItem[] = pdfs.map((pdf) => {
-          return new PdfFileListItemImpl(pdf, path.basename(pdf));
+        const pdfObjs: IPdfFileListItem[] = pdfs.map((pdf, index) => {
+          return new PdfFileListItemImpl(index, pdf, path.basename(pdf));
         });
         return setSrcFiles(pdfObjs);
       })
       .catch((err) => console.log(err));
-  };
-
-  const onListChange = (newList: ReadonlyArray<IPdfFileListItem>) => {
-    setSrcFiles(newList);
   };
 
   const setResultPdfName = (): void => {
@@ -134,7 +130,7 @@ const PdfMergeMain = () => {
       return (
         <PdfOrdering
           srcFiles={srcFiles}
-          onListChange={onListChange}
+          setSrcFiles={setSrcFiles}
           goForwards={goForwards}
           goBackwards={goBackwards}
         />
