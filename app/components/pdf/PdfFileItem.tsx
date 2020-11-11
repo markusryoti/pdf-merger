@@ -2,7 +2,13 @@
 /* eslint-disable @typescript-eslint/ban-types */
 /* eslint-disable react/prefer-stateless-function */
 import React, { useRef } from 'react';
-import { DropTargetMonitor, useDrag, useDrop, XYCoord } from 'react-dnd';
+import {
+  DragSource,
+  DropTargetMonitor,
+  useDrag,
+  useDrop,
+  XYCoord,
+} from 'react-dnd';
 import { ItemType } from './DragListType';
 import { IPdfFileListItem } from './PdfFileListItem';
 
@@ -68,7 +74,11 @@ export const PdfFileItem = ({
   });
 
   const [{ isDragging }, drag] = useDrag({
-    item: { type: ItemType.LIST_ITEM },
+    item: { name: pdfItem.fileName, type: ItemType.LIST_ITEM },
+    end: (item, monitor) => {
+      const dropResult = monitor.getDropResult();
+      console.log(dropResult);
+    },
     collect: (monitor) => ({
       isDragging: monitor.isDragging(),
     }),
@@ -77,7 +87,7 @@ export const PdfFileItem = ({
   drag(drop(ref));
 
   return (
-    <div ref={ref} className="box is-small p-2">
+    <div ref={ref} className="box is-small p-2 mt-2">
       {pdfItem.fileName && <div>{pdfItem.fileName}</div>}
     </div>
   );

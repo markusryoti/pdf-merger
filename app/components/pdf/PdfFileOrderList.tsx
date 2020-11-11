@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable import/no-named-as-default */
 import React from 'react';
-import { useDrop } from 'react-dnd';
+import { DropTargetMonitor, useDrop } from 'react-dnd';
 import { ItemType } from './DragListType';
 import PdfFileItem from './PdfFileItem';
 import { IPdfFileListItem } from './PdfFileListItem';
@@ -15,7 +15,7 @@ export const PdfFileOrderList = ({ srcFiles, setSrcFiles }: Props) => {
   const [, drop] = useDrop({
     accept: ItemType.LIST_ITEM,
     drop: () => console.log('dropped'),
-    collect: (monitor) => ({
+    collect: (monitor: DropTargetMonitor) => ({
       isOver: monitor.isOver(),
       canDrop: monitor.canDrop(),
     }),
@@ -35,7 +35,7 @@ export const PdfFileOrderList = ({ srcFiles, setSrcFiles }: Props) => {
   };
 
   return (
-    <div ref={drop}>
+    <div ref={drop} className="pb-5">
       {srcFiles.map((fileObj, index) => {
         return (
           <div key={fileObj.id}>

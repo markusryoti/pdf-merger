@@ -19,11 +19,14 @@ const FileInput = ({ srcFiles, selectPdfFiles, goForwards }: Props) => {
         >
           Browse
         </button>
-        {srcFiles && <h5 className="mt-5 title is-6">Selected</h5>}
-        <ol style={{ overflow: 'auto', maxHeight: '50%' }}>
+        <ol style={{ overflow: 'auto', maxHeight: '75%' }} className="mt-2">
           {srcFiles &&
             srcFiles.map((item) => {
-              return <li key={item.absolutePath}>{item.fileName}</li>;
+              return (
+                <li className="mt-1" key={item.absolutePath}>
+                  {item.fileName}
+                </li>
+              );
             })}
         </ol>
       </div>
