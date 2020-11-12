@@ -17,14 +17,20 @@ const PdfOrdering = ({
   goBackwards,
 }: Props) => {
   return (
-    <div className="box page-container mt-3 is-flex is-flex-direction-column is-justify-content-space-evenly">
-      <div className="is-flex is-flex-direction-column is-flex-grow-2">
+    <div className="box page-container mt-3 is-flex is-flex-direction-column">
+      <div
+        className="is-flex is-flex-direction-column"
+        style={{ height: '90%' }}
+      >
         <h2 className="subtitle">2. Select the order of Pdf Files</h2>
-        <div style={{ overflow: 'auto', height: '75%' }}>
+        <div style={{ overflow: 'auto' }}>
           <PdfFileOrderList srcFiles={srcFiles} setSrcFiles={setSrcFiles} />
         </div>
       </div>
-      <div>
+      <div
+        className="is-flex is-align-items-flex-end"
+        style={{ height: '100%' }}
+      >
         <button
           type="button"
           onClick={goBackwards}
