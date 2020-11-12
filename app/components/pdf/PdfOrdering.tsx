@@ -5,9 +5,11 @@ import PdfFileOrderList from './PdfFileOrderList';
 
 interface Props {
   srcFiles: ReadonlyArray<IPdfFileListItem>;
-  setSrcFiles: any;
-  goForwards: any;
-  goBackwards: any;
+  setSrcFiles: React.Dispatch<
+    React.SetStateAction<readonly IPdfFileListItem[]>
+  >;
+  goForwards: () => void;
+  goBackwards: () => void;
 }
 
 const PdfOrdering = ({

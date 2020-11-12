@@ -8,7 +8,9 @@ import { IPdfFileListItem } from './PdfFileListItem';
 
 interface Props {
   srcFiles: ReadonlyArray<IPdfFileListItem>;
-  setSrcFiles: any;
+  setSrcFiles: React.Dispatch<
+    React.SetStateAction<readonly IPdfFileListItem[]>
+  >;
 }
 
 export const PdfFileOrderList = ({ srcFiles, setSrcFiles }: Props) => {

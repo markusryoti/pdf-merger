@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { IPdfFileListItem } from './PdfFileListItem';
 
 interface Props {
   srcFiles: ReadonlyArray<IPdfFileListItem>;
-  selectPdfFiles: any;
-  goForwards: any;
+  selectPdfFiles: () => void;
+  goForwards: () => void;
 }
 
 const FileInput = ({ srcFiles, selectPdfFiles, goForwards }: Props) => {

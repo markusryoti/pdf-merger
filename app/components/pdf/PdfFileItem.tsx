@@ -2,19 +2,13 @@
 /* eslint-disable @typescript-eslint/ban-types */
 /* eslint-disable react/prefer-stateless-function */
 import React, { useRef } from 'react';
-import {
-  DragSource,
-  DropTargetMonitor,
-  useDrag,
-  useDrop,
-  XYCoord,
-} from 'react-dnd';
+import { DropTargetMonitor, useDrag, useDrop, XYCoord } from 'react-dnd';
 import { ItemType } from './DragListType';
 import { IPdfFileListItem } from './PdfFileListItem';
 
 interface PdfFileProps {
   pdfItem: IPdfFileListItem;
-  moveCardHandler: any;
+  moveCardHandler: (dragIndex: number, hoverIndex: number) => void;
   index: number;
 }
 
