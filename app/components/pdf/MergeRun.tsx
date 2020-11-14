@@ -66,15 +66,20 @@ const MergeRun = ({
         style={{ height: '100%' }}
         className="is-flex is-flex-direction-column is-justify-content-center is-align-items-center"
       >
-        {pdfMerged && (
+        {(pdfMerged || error) && (
           <div
             style={{ height: '60%' }}
             className=" mb-5 is-flex is-flex-direction-column is-justify-content-space-between is-align-items-center"
           >
             {error ? (
-              <h4 className="mt-3 title has-text-danger">
-                Something went wrong
-              </h4>
+              <>
+                <h4 className="mt-3 title has-text-danger">
+                  Something went wrong
+                </h4>
+                <span className="icon">
+                  <i className="has-text-danger far fa-9x fa-times-circle" />
+                </span>
+              </>
             ) : (
               <>
                 <h4 className="mt-3 title has-text-success">Success!</h4>
