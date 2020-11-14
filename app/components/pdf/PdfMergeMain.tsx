@@ -67,9 +67,8 @@ const PdfMergeMain = () => {
       });
   };
 
-  const doPdfMerge = async (): Promise<void> => {
-    if (!outputFile) return;
-    setLoading(true);
+  const doPdfMerge = async (): Promise<number | undefined> => {
+    if (!outputFile) throw new Error('No output file specified');
 
     // Save start time
     const startTime: number = new Date().getTime();
@@ -91,22 +90,31 @@ const PdfMergeMain = () => {
 
     const buf = await mergedPdf.save(); // Uint8Array
 
+    let timeout = 1;
     fs.open(outputFile, 'w', (err, fd) => {
-      if (err) console.log("Couldn't open output file");
+      if (err) {
+        console.log("Couldn't open output file");
+        throw new Error('Something went wrong');
+      }
 
       fs.write(fd, buf, 0, buf.length, null, (writeErr) => {
-        if (writeErr) console.log("Couldn't write pdf");
+        if (writeErr) {
+          console.log("Couldn't write pdf");
+          throw new Error('Something went wrong');
+        }
 
         fs.close(fd, () => {
           const endTime: number = new Date().getTime();
-          if (endTime - startTime > 1000) {
-            setLoading(false);
+          const elapsedTime: number = endTime - startTime;
+          if (elapsedTime > 3000) {
+            timeout = 0;
           } else {
-            setTimeout(() => setLoading(false), 1000);
+            timeout = 3000 - elapsedTime;
           }
         });
       });
     });
+    return timeout;
   };
 
   const goForwards = (): void => {
@@ -149,6 +157,7 @@ const PdfMergeMain = () => {
         <MergeRun
           doPdfMerge={doPdfMerge}
           loading={loading}
+          setLoading={setLoading}
           outputFile={outputFile}
           goBackwards={goBackwards}
         />

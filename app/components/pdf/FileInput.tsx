@@ -9,8 +9,8 @@ interface Props {
 
 const FileInput = ({ srcFiles, selectPdfFiles, goForwards }: Props) => {
   return (
-    <div className="box page-container mt-3 is-flex is-flex-direction-column is-justify-content-space-between">
-      <div>
+    <div className="box page-container mt-3 is-flex is-flex-direction-column">
+      <div style={{ height: '90%' }}>
         <h2 className="subtitle">1. Select Pdf Files</h2>
         <button
           type="button"
@@ -19,18 +19,23 @@ const FileInput = ({ srcFiles, selectPdfFiles, goForwards }: Props) => {
         >
           Browse
         </button>
-        <ol style={{ overflow: 'auto', maxHeight: '75%' }} className="mt-2">
-          {srcFiles &&
-            srcFiles.map((item) => {
-              return (
-                <li className="mt-1" key={item.absolutePath}>
-                  {item.fileName}
-                </li>
-              );
-            })}
-        </ol>
+        <div style={{ overflow: 'auto', height: '75%' }} className="mt-2">
+          <ol>
+            {srcFiles &&
+              srcFiles.map((item) => {
+                return (
+                  <li className="mt-1" key={item.absolutePath}>
+                    {item.fileName}
+                  </li>
+                );
+              })}
+          </ol>
+        </div>
       </div>
-      <div>
+      <div
+        style={{ height: '100%' }}
+        className="is-flex is-align-items-flex-end"
+      >
         <button
           type="button"
           onClick={goForwards}

@@ -30,7 +30,7 @@ const PdfOrdering = ({
         </div>
       </div>
       <div
-        className="is-flex is-align-items-flex-end"
+        className="mt-1 is-flex is-align-items-flex-end"
         style={{ height: '100%' }}
       >
         <button

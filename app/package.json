@@ -5,9 +5,9 @@
   "description": "Application for merging pdf files locally. Select the wanted files and order as wanted, then just run the merging.",
   "main": "./main.prod.js",
   "author": {
-    "name": "Electron React Boilerplate Maintainers",
-    "email": "electronreactboilerplate@gmail.com",
-    "url": "https://github.com/electron-react-boilerplate"
+    "name": "Markus Ryoti",
+    "email": "not.real.email@gmail.com",
+    "url": "https://github.com/markusryoti/pdf-merger"
   },
   "scripts": {
     "electron-rebuild": "node -r ../internals/scripts/BabelRegister.js ../internals/scripts/ElectronRebuild.js",

@@ -27,7 +27,10 @@ const OutputFileSelection = ({
         </button>
         <p className="mt-3">{outputFile && path.basename(outputFile)}</p>
       </div>
-      <div>
+      <div
+        style={{ height: '100%' }}
+        className="mt-2 is-flex is-align-items-flex-end"
+      >
         <button
           type="button"
           onClick={goBackwards}
