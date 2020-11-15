@@ -6,7 +6,7 @@ interface Props {
   loading: boolean;
   setLoading: React.Dispatch<React.SetStateAction<boolean>>;
   outputFile: string;
-  doPdfMerge: () => Promise<number | undefined>;
+  doPdfMerge: () => Promise<number>;
   goBackwards: () => void;
 }
 
@@ -26,14 +26,13 @@ const MergeRun = ({
     setPdfMerged(false);
     doPdfMerge()
       .then((timeOutMilliseconds) => {
-        console.log(timeOutMilliseconds);
         setTimeout(() => setPdfMerged(true), timeOutMilliseconds);
-        setLoading(false);
+        setTimeout(() => setLoading(false), timeOutMilliseconds);
         return 0;
       })
       .catch((err) => {
         console.log(err);
-        setTimeout(() => setPdfMerged(false), 0);
+        setPdfMerged(false);
         setError(true);
         setLoading(false);
       });
