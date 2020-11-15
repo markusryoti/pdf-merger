@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { IPdfFileListItem } from './PdfFileListItem';
+import mergePdfs from './util/merge';
 
 const { shell } = require('electron').remote;
 
@@ -6,7 +8,7 @@ interface Props {
   loading: boolean;
   setLoading: React.Dispatch<React.SetStateAction<boolean>>;
   outputFile: string;
-  doPdfMerge: () => Promise<number>;
+  srcFiles: readonly IPdfFileListItem[];
   goBackwards: () => void;
 }
 
@@ -14,7 +16,7 @@ const MergeRun = ({
   loading,
   setLoading,
   outputFile,
-  doPdfMerge,
+  srcFiles,
   goBackwards,
 }: Props) => {
   const [pdfMerged, setPdfMerged] = useState(false);
@@ -24,7 +26,7 @@ const MergeRun = ({
     setLoading(true);
     setError(false);
     setPdfMerged(false);
-    doPdfMerge()
+    mergePdfs(srcFiles, outputFile)
       .then((timeOutMilliseconds) => {
         setTimeout(() => setPdfMerged(true), timeOutMilliseconds);
         setTimeout(() => setLoading(false), timeOutMilliseconds);

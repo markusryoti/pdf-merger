@@ -2,10 +2,10 @@ import React from 'react';
 import path from 'path';
 
 interface Props {
-  setResultPdfName: any;
+  setResultPdfName: () => void;
   outputFile: string;
-  goForwards: any;
-  goBackwards: any;
+  goForwards: () => void;
+  goBackwards: () => void;
 }
 
 const OutputFileSelection = ({
