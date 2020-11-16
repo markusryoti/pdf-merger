@@ -70,7 +70,7 @@ const createWindow = async () => {
     height: 600,
     minWidth: 750,
     minHeight: 600,
-    icon: getAssetPath('filetype_pdf.png'),
+    icon: getAssetPath('icon.png'),
     webPreferences:
       (process.env.NODE_ENV === 'development' ||
         process.env.E2E_BUILD === 'true') &&
