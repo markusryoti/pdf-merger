@@ -114,6 +114,7 @@ const createWindow = async () => {
 /**
  * Add event listeners...
  */
+app.allowRendererProcessReuse = true;
 
 app.on('window-all-closed', () => {
   // Respect the OSX convention of having the application in memory even
